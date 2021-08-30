@@ -11,7 +11,7 @@
  * 
  */
 
-const canSum = (targetSum, numbers, memo = {}) => {
+const canSumMemorization = (targetSum, numbers, memo = {}) => {
     // Return true when TargetSum = 0
     if (targetSum === 0) return true
     
@@ -28,6 +28,30 @@ const canSum = (targetSum, numbers, memo = {}) => {
     return false
 }
 
+const canSumTabulation = (targetSum, numbers) => {
+    let grid = Array(targetSum + 1).fill(false)
+    grid[0] = true
+
+    numbers.map(v => grid[v] = true)
+
+    for (let i = 1; i <= targetSum; i++) {
+        for(let n of numbers){            
+            let current = grid[i]
+            if(current){
+                if(n+i <= targetSum)grid[n+i] = true
+            }
+        }
+        
+    }
+
+    return grid[targetSum]
+
+}
+
+
+const canSum = (targetSum, numbers) => {
+    return canSumTabulation(targetSum, numbers) 
+}
 console.log(canSum(7, [2,3])) // true
 console.log(canSum(7, [5,3,4,7])) // true
 console.log(canSum(7, [2,4]))   // false

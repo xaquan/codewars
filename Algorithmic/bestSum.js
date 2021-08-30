@@ -1,4 +1,4 @@
-const bestSum = (targetSum, numbers, memo = {})=>{
+const bestSumMemoization = (targetSum, numbers, memo = {})=>{
     if(targetSum === 0) return []
     if(targetSum < 0) return null
     if(targetSum in memo) return memo[targetSum]
@@ -18,6 +18,30 @@ const bestSum = (targetSum, numbers, memo = {})=>{
     memo[targetSum] = shortest
     return shortest
 }
+
+const bestSumTabulation = (targetSum, numbers) => {
+    let grid = Array(targetSum + 1).fill(null)
+    grid[0] = []
+
+    for (let i = 0; i < targetSum; i++) {
+        for (const n of numbers) {
+            let current = grid[i]
+
+            if(current !== null){
+                let combination = [...current, n]
+                if(i+n <= targetSum) 
+                    if(grid[i+n] === null || grid[i+n].length > combination.combination)
+                        grid[i+n] = combination
+            }
+        }
+    }
+    return grid[targetSum]
+}
+
+const bestSum = (targetSum, numbers) =>{
+    return bestSumTabulation(targetSum, numbers)
+}
+
 
 console.log(bestSum(7, [5,3,4,7])); // [7]
 console.log(bestSum(8, [2,3,5]));   // [3,5]

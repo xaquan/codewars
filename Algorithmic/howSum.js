@@ -1,4 +1,4 @@
-const howSum = (targetSum, numbers, memo = {})=>{
+const howSumMemorization = (targetSum, numbers, memo = {})=>{
     if(targetSum === 0) return []
     if(targetSum < 0) return null
     if(targetSum in memo) return memo[targetSum]
@@ -15,7 +15,27 @@ const howSum = (targetSum, numbers, memo = {})=>{
     return null
 }
 
-console.log(howSum(7, [2,3])); // [3.2.2]
+const howSumTabulation = (targetSum, numbers) => {
+    let grid = Array(targetSum + 1).fill(null)
+    grid[0] = []
+
+    for (let i = 0; i < targetSum; i++) {
+        for (const n of numbers) {
+            let current = grid[i]
+
+            if(current !== null){
+                if(i+n <= targetSum) grid[i+n] = [...current, n]
+            }
+        }
+    }
+    return grid[targetSum]
+}
+
+const howSum = (targetSum, numbers) =>{
+    return howSumTabulation(targetSum, numbers)
+}
+
+console.log(howSum(7, [2,3])); // [3,2,2]
 console.log(howSum(7, [5,3,4,7])); // [4,3]
 console.log(howSum(7, [2,4]));   // null
 console.log(howSum(8, [2,3,6])); //[2,2,2,2]

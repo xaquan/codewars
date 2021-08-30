@@ -10,7 +10,7 @@
  */
 
 
-const gridTravel = (n,m, memo= {}) => {
+const gridTravelMemorization = (n,m, memo= {}) => {
     // Create key for storage
     const key = `${n},${m}`
     // Return 0 when move outside the grid
@@ -30,8 +30,28 @@ const gridTravel = (n,m, memo= {}) => {
     return memo[key]
 }
 
+const gridTravelTabulation = (n, m) => {
+
+    let grid = Array.from(Array(n+1), () => Array(m+1).fill(0))
+    grid[1][1] = 1
+
+
+    for (let down = 1; down <= n; down++) {
+        for (let right = 1; right <= m; right++) {
+            let current = grid[down][right]
+            if(right < m) grid[down][right+1] += current
+            if(down < n)grid[down+1][right] += current
+        }
+    }
+    return grid[n][m]
+}
+
+const gridTravel =  (n, m) => {
+    return gridTravelTabulation(n, m)
+}
+
 console.log(gridTravel(1,1)); //1
 console.log(gridTravel(2,3)); //3
 console.log(gridTravel(3,2)); //3
 console.log(gridTravel(3,3)); //6
-console.log(gridTravel(18,18)); //2333606220
+// console.log(gridTravel(18,18)); //2333606220
